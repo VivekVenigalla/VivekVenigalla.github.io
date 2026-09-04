@@ -4,61 +4,63 @@ export default function Background() {
       aria-hidden
       className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-background"
     >
-      {/* faint dot grid for texture */}
-      <div
-        className="absolute inset-0 opacity-[0.35]"
-        style={{
-          backgroundImage:
-            "radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px)",
-          backgroundSize: "28px 28px",
-        }}
-      />
+      {/* drifting grid mesh */}
+      <div className="grid-mesh absolute inset-0" />
 
-      {/* slow-drifting gradient blobs */}
-      <div className="blob blob-teal absolute top-[-10%] left-[-10%] h-[45vw] w-[45vw] max-h-[560px] max-w-[560px] rounded-full" />
-      <div className="blob blob-violet absolute top-[20%] right-[-15%] h-[40vw] w-[40vw] max-h-[520px] max-w-[520px] rounded-full" />
-      <div className="blob blob-teal-2 absolute bottom-[-15%] left-[20%] h-[50vw] w-[50vw] max-h-[600px] max-w-[600px] rounded-full" />
+      {/* slow-moving spotlight that lights up nearby grid intersections */}
+      <div className="spotlight absolute inset-0" />
 
       {/* vignette so content stays readable */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse at center, transparent 0%, var(--background) 85%)",
+            "radial-gradient(ellipse at center, transparent 0%, var(--background) 88%)",
         }}
       />
 
       <style>{`
-        .blob {
-          filter: blur(90px);
-          opacity: 0.28;
+        @property --spot-x {
+          syntax: '<percentage>';
+          inherits: false;
+          initial-value: 12%;
         }
-        .blob-teal {
-          background: radial-gradient(circle, var(--accent-teal), transparent 70%);
-          animation: drift-a 26s ease-in-out infinite;
+        @property --spot-y {
+          syntax: '<percentage>';
+          inherits: false;
+          initial-value: 20%;
         }
-        .blob-violet {
-          background: radial-gradient(circle, var(--accent-violet), transparent 70%);
-          animation: drift-b 32s ease-in-out infinite;
+        .grid-mesh {
+          background-image:
+            linear-gradient(rgba(45, 212, 191, 0.14) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(45, 212, 191, 0.14) 1px, transparent 1px);
+          background-size: 48px 48px;
+          opacity: 0.5;
+          animation: grid-drift 40s linear infinite;
         }
-        .blob-teal-2 {
-          background: radial-gradient(circle, var(--accent-cyan), transparent 70%);
-          animation: drift-c 38s ease-in-out infinite;
+        @keyframes grid-drift {
+          0% { background-position: 0px 0px, 0px 0px; }
+          100% { background-position: 96px 48px, 96px 48px; }
         }
-        @keyframes drift-a {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          50% { transform: translate(6vw, 8vh) scale(1.1); }
+        .spotlight {
+          background: radial-gradient(
+            420px circle at var(--spot-x, 20%) var(--spot-y, 30%),
+            rgba(45, 212, 191, 0.22),
+            rgba(167, 139, 250, 0.12) 45%,
+            transparent 70%
+          );
+          animation: spotlight-move 22s ease-in-out infinite;
+          filter: blur(4px);
         }
-        @keyframes drift-b {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          50% { transform: translate(-8vw, 6vh) scale(1.08); }
-        }
-        @keyframes drift-c {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          50% { transform: translate(5vw, -6vh) scale(1.05); }
+        @keyframes spotlight-move {
+          0%   { --spot-x: 12%; --spot-y: 20%; }
+          25%  { --spot-x: 82%; --spot-y: 35%; }
+          50%  { --spot-x: 65%; --spot-y: 80%; }
+          75%  { --spot-x: 18%; --spot-y: 70%; }
+          100% { --spot-x: 12%; --spot-y: 20%; }
         }
         @media (prefers-reduced-motion: reduce) {
-          .blob { animation: none; }
+          .grid-mesh, .spotlight { animation: none; }
         }
       `}</style>
     </div>

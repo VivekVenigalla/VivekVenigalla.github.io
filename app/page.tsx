@@ -1,7 +1,7 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
-import ProjectsFan from "@/components/ProjectsFan";
+import ProjectsCarousel from "@/components/ProjectsCarousel";
 import ExperienceTimeline from "@/components/ExperienceTimeline";
 import Skills from "@/components/Skills";
 import Interests from "@/components/Interests";
@@ -14,7 +14,7 @@ export default function Home() {
       <main>
         <Hero />
         <About />
-        <ProjectsFan />
+        <ProjectsCarousel />
         <ExperienceTimeline />
         <Skills />
         <Interests />
